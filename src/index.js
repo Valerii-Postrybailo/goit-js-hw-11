@@ -18,7 +18,43 @@ console.log(inputEl)
 const galleryEl = document.querySelector(".gallery")
 console.log(galleryEl)
 
+////////////////////////////////////////////////////////////////////////
 
+const deleteMarkup = ref => {
+  ref.innerHTML = ''
+}
+
+const inputEvtHandler = evt => {
+  console.log(evt)
+  const textInputValue = evt.target.value.trim();
+  console.log(textInputValue)
+  console.log(evt.currentTarget.value)
+  console.log("Uf")
+
+  if (!textInputValue) {
+    deleteMarkup(galleryEl);
+    return;
+  }
+
+  fetchImg(textInputValue)
+    .then((images) => renderMarkup(images))
+    .catch((error) => Notify.failure("Sorry, there are no images matching your search query. Please try again."));
+}
+
+const renderMarkup = data => {
+  renderImgGallery(data)
+  galleryEl.innerHTML = renderImgGallery(data)
+
+    console.log(data)
+    // console.log(markupInfo)
+    // console.log(renderImgGallery(data))
+  const markupInfo = renderImgGallery(data);
+  console.log(markupInfo)
+    // galleryEl.innerHTML = renderImgGallery(data);
+  // galleryEl.insertAdjacentHTML("afterbegin", markupInfo)
+}
+
+inputEl.addEventListener('input', inputEvtHandler);
 
 // console.log(fetchImg("cat"))
 
@@ -33,16 +69,19 @@ console.log(galleryEl)
 //     .catch((error) => Notify.failure("Sorry, there are no images matching your search query. Please try again."));
 // })
 
-formEl.addEventListener('submit', submitForm);
+// formEl.addEventListener('submit', submitForm);
+  // ///////////////////////////////////////////////////////////////////
+// inputEl.addEventListener("input", submitForm)
+// function submitForm(evt) {
+//   evt.preventDefault();
+//   console.log(evt.target.value)
 
-function submitForm(evt) {
-  evt.preventDefault();
-  fetchImg()
-    .then((images) => renderImgGallery(images))
-    .catch((error) => Notify.failure("Sorry, there are no images matching your search query. Please try again."));
-  console.log(evt.target.value)
-}
+//   fetchImg(evt.target.value)
+//     .then((images) => renderImgGallery(images))
+//     .catch((error) => Notify.failure("Sorry, there are no images matching your search query. Please try again."));
+// }
 
+//////////////////////////////////////////////////////////////////////
 // function handleSubmit(evt) {
 //   evt.preventDefault();
 //   console.log(evt.target.value)
@@ -52,15 +91,19 @@ function submitForm(evt) {
 // }
 
 // galleryEl.insertAdjacentHTML("afterbegin",imgMarkup)
-const markup = renderImgGallery()
-  galleryEl.insertAdjacentHTML("afterbegin",markup)
+// const markup = renderImgGallery(images)
+//   galleryEl.insertAdjacentHTML("afterbegin",markup)
 
 
 function renderImgGallery(images) {
   console.log("Im here?")
-  const markup = images
-    .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
-      return `
+  const markup = images.hits
+  console.log(markup)
+
+  return markup
+    .map(
+      ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
+      `
       <a>
         <div class="photo-card">
           <img src="${webformatURL}" alt="${tags}" loading="lazy" />
@@ -81,9 +124,8 @@ function renderImgGallery(images) {
         </div>
       </a>
       `
-    })
+    )
     .join("");
-  // galleryEl.innerHTML = markup;
 }
 
 new SimpleLightbox('.gallery a', { /* options */ });

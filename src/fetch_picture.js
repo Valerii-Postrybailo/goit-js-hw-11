@@ -7,10 +7,18 @@ function fetchImg(qName) {
         if (response.status === 404) {
           return Promise.reject(new Error());
         }
-
-      return console.log(response.json())
+      return response.json()
   });
 }
+
+// var API_KEY = '29743912-8e7685db13f3781653d214456';
+// var URL = "https://pixabay.com/api/?key="+API_KEY+"&q="+encodeURIComponent('red roses');
+// $.getJSON(URL, function(data){
+// if (parseInt(data.totalHits) > 0)
+//     $.each(data.hits, function(i, hit){ console.log(hit.pageURL); });
+// else
+//     console.log('No hits');
+// });
 
 
 // const  fetchImg = async(qName) => {
