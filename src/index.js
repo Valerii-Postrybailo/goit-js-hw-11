@@ -25,11 +25,17 @@ const deleteMarkup = ref => {
 }
 
 const inputEvtHandler = evt => {
-  console.log(evt)
-  const textInputValue = evt.target.value.trim();
-  console.log(textInputValue)
-  console.log(evt.currentTarget.value)
-  console.log("Uf")
+  evt.preventDefault();
+  console.log(evt.currentTarget)
+  const textInputValue = evt.currentTarget.value;
+  // console.log(textInputValue)
+  // console.log(evt.currentTarget)
+  
+  // const {
+  //   inputValue: { searchQuery }
+  // } = evt.currentTarget;
+  
+  // console.log(searchQuery.value)
 
   if (!textInputValue) {
     deleteMarkup(galleryEl);
@@ -109,23 +115,27 @@ function renderImgGallery(images) {
           <img src="${webformatURL}" alt="${tags}" loading="lazy" />
           <div class="info">
             <p class="info-item">
-              <b>${likes}</b>
+              <b>Likes</b>
+              <p>${likes}</p>
             </p>
             <p class="info-item">
-              <b>${views}</b>
+              <b>Views</b>
+              <p>${views}</p>
             </p>
             <p class="info-item">
-              <b>${comments}</b>
+              <b>Comments</b>
+              <p>${comments}</p>
             </p>
             <p class="info-item">
-              <b>${downloads}</b>
+              <b>Downloads</b>
+              <p>${downloads}</p>
             </p>
           </div>
         </div>
       </a>
       `
     )
-    .join("");
+  .join("");
 }
 
 new SimpleLightbox('.gallery a', { /* options */ });
