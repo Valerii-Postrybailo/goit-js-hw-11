@@ -14,9 +14,14 @@
   margin-right: auto;
 }
 
-a{
+a .link{
   display: flex;
+
+  text-decoration: none;
+  height: 100%;
 }
+
+
 
 .photo-card {
   position: relative;
@@ -24,11 +29,17 @@ a{
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
+.photo-card:hover {
+  cursor: zoom-in;
+}
+
 img:hover {
   transform: scale(1.03);
 }
 
 img {
+  display: block;
+
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -37,14 +48,18 @@ img {
 
 .info{
   display: flex;
+  justify-content: space-around
 }
 
-.link {
-  display: block;
-  text-decoration: none;
-  height: 100%;
+.info-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  color: black;
 }
 
-.link:hover {
-  cursor: zoom-in;
-}
+
+
+
+
