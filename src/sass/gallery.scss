@@ -31,11 +31,12 @@ a .link{
 
 .photo-card:hover {
   cursor: zoom-in;
-}
-
-img:hover {
   transform: scale(1.03);
 }
+
+// img:hover {
+//   transform: scale(1.03);
+// }
 
 img {
   display: block;
