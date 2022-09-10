@@ -110,25 +110,25 @@ function renderImgGallery(images) {
     .map(
       ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
       `
-      <a href="${largeImageURL}">
+      <a class="link" href="${largeImageURL}">
         <div class="photo-card">
           <img src="${webformatURL}" alt="${tags}" loading="lazy" />
           <div class="info">
             <p class="info-item">
               <b>Likes</b>
-              <p>${likes}</p>
+                ${likes}
             </p>
             <p class="info-item">
               <b>Views</b>
-              <p>${views}</p>
+                ${views}
             </p>
             <p class="info-item">
               <b>Comments</b>
-              <p>${comments}</p>
+                ${comments}
             </p>
             <p class="info-item">
               <b>Downloads</b>
-              <p>${downloads}</p>
+                ${downloads}
             </p>
           </div>
         </div>
@@ -138,4 +138,4 @@ function renderImgGallery(images) {
   .join("");
 }
 
-new SimpleLightbox('.gallery a', { /* options */ });
+new SimpleLightbox('.gallery a', { captionDelay	:250 });
