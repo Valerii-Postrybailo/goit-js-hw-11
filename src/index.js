@@ -1,4 +1,4 @@
-import { fetchImg } from './fetch_picture';
+import  NewsApiService  from './fetch_picture';
 
 const axios = require('axios').default;
 
@@ -11,75 +11,60 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 ///////////////////////////////////////////////////////////////////
 
-const formEl = document.querySelector("#search-form");
-console.log(formEl)
+const newsApiService = new NewsApiService()
 
-const inputEl = document.querySelector('input[name="searchQuery"]')
-console.log(inputEl)
+const formEl = document.querySelector("#search-form");
 
 const galleryEl = document.querySelector(".gallery")
-console.log(galleryEl)
 
 const buttonEl = document.querySelector(`.load-more`)
-buttonEl.style.display = "none"
-console.log(buttonEl)
+// buttonEl.style.display = "none"
 
 ////////////////////////////////////////////////////////////////////////
 
-const deleteMarkup = ref => {
-  ref.innerHTML = ''
-}
+formEl.addEventListener("submit", submitFormEvtHandler);
+buttonEl.addEventListener("click", onLoadMore);
 
-const inputEvtHandler = evt => {
+let inputValue = '';
+
+function submitFormEvtHandler(evt) {
   evt.preventDefault();
-  console.log(evt.currentTarget)
-  const textInputValue = evt.currentTarget.value;
-  // console.log(textInputValue)
-  // console.log(evt.currentTarget)
-  
-  // const {
-  //   inputValue: { searchQuery }
-  // } = evt.currentTarget;
-  
-  // console.log(searchQuery.value)
 
-  if (!textInputValue) {
+  newsApiService.value  = evt.currentTarget.elements.searchQuery.value;
+  
+  newsApiService.resetPage();
+  newsApiService.fetchArticles()
+    .then(renderMarkup)
+
+  if (!inputValue) {
     deleteMarkup(galleryEl);
     return;
   }
-
-  fetchImg(textInputValue)
-    .then((images) => renderMarkup(images))
-    .catch((error) => Notify.failure("Sorry, there are no images matching your search query. Please try again."));
 }
 
-const renderMarkup = data => {
-  renderImgGallery(data)
-  galleryEl.innerHTML = renderImgGallery(data)
-
-    console.log(data)
-    // console.log(markupInfo)
-    // console.log(renderImgGallery(data))
-  const markupInfo = renderImgGallery(data);
-  console.log(markupInfo)
-    // galleryEl.innerHTML = renderImgGallery(data);
-  // galleryEl.insertAdjacentHTML("afterbegin", markupInfo)
+function onLoadMore() {
+  newsApiService.fetchArticles().then(renderMarkup)
 }
 
-inputEl.addEventListener('input', inputEvtHandler);
+function  deleteMarkup (ref) {
+  ref.innerHTML = ''
+}
+
+function renderMarkup(data) {
+  console.log(data)
+  if (data.length === 0) {
+    Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+  } else {
+    galleryEl.insertAdjacentHTML("beforeend", renderImgGallery(data));
+  }
+}
 
 function renderImgGallery(images) {
-  console.log(images.hits)
-    console.log("Im here?")
-    const markup = images.hits
-    console.log(markup)
-  if (markup == []){
-    Notify.failure("Sorry, there are no images matching your search query. Please try again.")
-    console.log("wtf")
-  }else{
-    return markup
-      .map(
-        ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
+  const markup = images
+  
+  return markup
+    .map(
+      ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
         `
         <a class="gallery__item" href="${largeImageURL}">
 
@@ -115,6 +100,6 @@ function renderImgGallery(images) {
       )
     .join("");
   }
-}
+
 
 new SimpleLightbox('.gallery a', { captionDelay: 250 });
