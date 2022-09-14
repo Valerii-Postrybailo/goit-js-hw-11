@@ -1,4 +1,5 @@
 import  NewsApiService  from './fetch_picture';
+import LoadMoreBtn from './load_more_btn';
 
 const axios = require('axios').default;
 
@@ -11,6 +12,9 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 ///////////////////////////////////////////////////////////////////
 
+const loadMoreBtn = new LoadMoreBtn({
+  selector: ('.btn-primary')
+})
 const newsApiService = new NewsApiService()
 
 const formEl = document.querySelector("#search-form");
@@ -24,6 +28,9 @@ const buttonEl = document.querySelector(`.load-more`)
 
 formEl.addEventListener("submit", submitFormEvtHandler);
 buttonEl.addEventListener("click", onLoadMore);
+console.log(loadMoreBtn.refs)
+loadMoreBtn.refs.button.addEventListener("click", onLoadMore);
+
 
 let inputValue = '';
 
