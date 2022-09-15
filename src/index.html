@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page title</title>
-    <link rel="stylesheet" href="./sass/index.scss" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="./sass/index.scss" />
+
   </head>
   <body>
 
@@ -15,25 +16,26 @@
       <button type="submit">Search</button>
     </form>
     
-    <div class="gallery">
-      <!-- Картки зображень -->
-    </div>
+      <div class="gallery">
+        <!-- Картки зображень -->
+      </div>
+      
+      <div class="btn_div">
+        <button 
+          class="btn btn-primary" 
+          type="button" 
+          disabled>
+  
+          <span 
+            class="spinner-border spinner-border-sm" 
+            role="status" 
+            aria-hidden="true">
+          </span>
+          Loading...
+        </button>
+      </div>
+  
     
-    <button type="button" class="load-more">Load more</button>
-
-    <button 
-      class="btn btn-primary" 
-      type="button" 
-      disabled>
-
-      <span 
-        class="spinner-border spinner-border-sm" 
-        role="status" 
-        aria-hidden="true">
-      </span>
-      Loading...
-    </button>
-
     <script type="module" src="./index.js"></script>
   </body>
 </html>

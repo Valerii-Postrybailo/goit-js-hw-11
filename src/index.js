@@ -13,7 +13,8 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 ///////////////////////////////////////////////////////////////////
 
 const loadMoreBtn = new LoadMoreBtn({
-  selector: ('.btn-primary')
+  selector: ('.btn-primary'),
+  hidden:true,
 })
 const newsApiService = new NewsApiService()
 
@@ -27,34 +28,56 @@ const buttonEl = document.querySelector(`.load-more`)
 ////////////////////////////////////////////////////////////////////////
 
 formEl.addEventListener("submit", submitFormEvtHandler);
-buttonEl.addEventListener("click", onLoadMore);
+// buttonEl.addEventListener("click", onLoadMore);
+
+
 console.log(loadMoreBtn.refs)
+console.log(loadMoreBtn.refs.label.textContent)
+
 loadMoreBtn.refs.button.addEventListener("click", onLoadMore);
 
 
-let inputValue = '';
+// let inputValue = '';
 
 function submitFormEvtHandler(evt) {
   evt.preventDefault();
 
   newsApiService.value  = evt.currentTarget.elements.searchQuery.value;
   
-  newsApiService.resetPage();
-  newsApiService.fetchArticles()
-    .then(renderMarkup)
 
-  if (!inputValue) {
-    deleteMarkup(galleryEl);
-    return;
-  }
+  loadMoreBtn.show();
+  loadMoreBtn.disable();
+
+  newsApiService.resetPage();
+  newsApiService.fetchArticles().then(images => {
+    deleteMarkup();
+    renderMarkup(images);
+    loadMoreBtn.enable();
+  })
+  // if (!inputValue) {
+  //   deleteMarkup(galleryEl);
+  //   return;
+  // }
 }
 
 function onLoadMore() {
-  newsApiService.fetchArticles().then(renderMarkup)
+  loadMoreBtn.disable();
+  newsApiService.fetchArticles().then(images => {
+    renderMarkup(images);
+    loadMoreBtn.enable();
+  })
 }
 
-function  deleteMarkup (ref) {
-  ref.innerHTML = ''
+// function fetchImages(){
+//   loadMoreBtn.disable();
+//   renderMarkup(images);
+//     loadMoreBtn.enable();
+    
+// }
+
+function  deleteMarkup() {
+  galleryEl.innerHTML =''
+  // ref.innerHTML = ''
 }
 
 function renderMarkup(data) {
@@ -73,11 +96,13 @@ function renderImgGallery(images) {
     .map(
       ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
         `
-        <a class="gallery__item" href="${largeImageURL}">
 
             <div class="photo-card">
-
-              <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+              <div class=img_div>
+                <a class="gallery__item" href="${largeImageURL}">
+                  <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+                </a>
+              </div>
 
               <div class="info">
 
@@ -102,11 +127,9 @@ function renderImgGallery(images) {
                 </p>
               </div>
           </div>
-        </a>
         `
       )
     .join("");
   }
-
 
 new SimpleLightbox('.gallery a', { captionDelay: 250 });
