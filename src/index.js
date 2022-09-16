@@ -132,4 +132,38 @@ function renderImgGallery(images) {
     .join("");
   }
 
-new SimpleLightbox('.gallery a', { captionDelay: 250 });
+  // gallery.on()
+  // var gallery = ('.gallery a').simpleLightbox();
+
+// gallery.next(); // Next Image
+
+/////////////////////////////////////////////////////////////////////
+
+galleryEl.addEventListener('click', onClick);
+
+function onClick(event) {
+  event.preventDefault();
+
+  if (event.target.nodeName !== 'IMG') {
+    return
+  }
+  event.preventDefault();
+  // console.log(event.target.nodeName)
+  // console.log(event.target.dataset.source)
+
+  // const instance = simpleLightbox.create(`<img src="${event.target.dataset.source}" width="800" height="600">`)
+  // new SimpleLightbox('.gallery a', {captionDelay	:250 });
+  new SimpleLightbox('.img_div a', {captionDelay	:250 });
+  // gallery.on()
+
+    // let gallery = new SimpleLightbox('.gallery a');
+  // gallery.on('show.simplelightbox');
+  // instance.show
+  // console.log(instance.show())
+}
+  
+
+
+
+
+
