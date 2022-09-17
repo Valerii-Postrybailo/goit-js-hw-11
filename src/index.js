@@ -9,7 +9,6 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from "simplelightbox";
 // Додатковий імпорт стилів
 import "simplelightbox/dist/simple-lightbox.min.css";
-
 ///////////////////////////////////////////////////////////////////
 
 const loadMoreBtn = new LoadMoreBtn({
@@ -65,6 +64,7 @@ function onLoadMore() {
   newsApiService.fetchArticles().then(images => {
     renderMarkup(images);
     loadMoreBtn.enable();
+    gallery.refresh()
   })
 }
 
@@ -95,15 +95,10 @@ function renderImgGallery(images) {
   return markup
     .map(
       ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
-        `
-
+        ` 
+        <a class="gallery__item" >
             <div class="photo-card">
-              <div class=img_div>
-                <a class="gallery__item" href="${largeImageURL}">
-                  <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-                </a>
-              </div>
-
+                <img src="${webformatURL}" alt="${tags}" loading="lazy" />
               <div class="info">
 
                 <p class="info-item">
@@ -126,41 +121,35 @@ function renderImgGallery(images) {
                     ${downloads}
                 </p>
               </div>
-          </div>
+            </div>
+          </a>
         `
       )
     .join("");
   }
 
   // gallery.on()
-  // var gallery = ('.gallery a').simpleLightbox();
+  // var gallery = ('.img_div a').simpleLightbox();
 
 // gallery.next(); // Next Image
 
+// new SimpleLightbox('.img_div a', { /* options */ });
 /////////////////////////////////////////////////////////////////////
+// lightbox(closed.simplelightbox, {close})
+// galleryEl.addEventListener('click', onClick);
 
-galleryEl.addEventListener('click', onClick);
-
-function onClick(event) {
-  event.preventDefault();
-
-  if (event.target.nodeName !== 'IMG') {
-    return
-  }
-  event.preventDefault();
-  // console.log(event.target.nodeName)
-  // console.log(event.target.dataset.source)
-
-  // const instance = simpleLightbox.create(`<img src="${event.target.dataset.source}" width="800" height="600">`)
-  // new SimpleLightbox('.gallery a', {captionDelay	:250 });
-  new SimpleLightbox('.img_div a', {captionDelay	:250 });
-  // gallery.on()
-
-    // let gallery = new SimpleLightbox('.gallery a');
-  // gallery.on('show.simplelightbox');
-  // instance.show
-  // console.log(instance.show())
-}
+// function onClick(event) {
+//   event.preventDefault();
+//   let gallery = new SimpleLightbox('.img_div a', {captionDelay	:250 });
+//   console.log(gallery)
+//   if (event.target.nodeName !== 'IMG') {
+//     gallery.close
+//     return
+//   }
+//   // event.preventDefault();
+//   console.log(event)
+//   console.log(event.target.nodeName)
+// }
   
 
 
