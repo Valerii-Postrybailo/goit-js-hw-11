@@ -14,7 +14,7 @@ export default class NewsApiService {
     //     Autorization: `29743912-8e7685db13f3781653d214456` 
     //   },
     // }
-    const url = `${BACK_END_URL}/?key=${API_KEY}&q=${this.inputValue}&image_type=photo&orientation=horizontal&safesearch=true&per_page=4&page=${this.page}`
+    const url = `${BACK_END_URL}/?key=${API_KEY}&q=${this.inputValue}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
     const response = await fetch(url);
     const data = await response.json();
     console.log(data);

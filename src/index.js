@@ -3,11 +3,6 @@ import LoadMoreBtn from './load_more_btn';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-// Описаний в документації
-import SimpleLightbox from "simplelightbox";
-// Додатковий імпорт стилів
-import "simplelightbox/dist/simple-lightbox.min.css";
-
 const axios = require('axios').default;
 
 ///////////////////////////////////////////////////////////////////
@@ -86,7 +81,7 @@ function renderImgGallery(images) {
     .map(
       ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
         ` 
-          <a class="gallery__link-item" >
+          <a class="gallery__link-item">
             <div class="photo-card">
                 <img src="${webformatURL}" alt="${tags}" loading="lazy" />
               <div class="info">
@@ -117,3 +112,5 @@ function renderImgGallery(images) {
       )
     .join("");
   }
+
+
