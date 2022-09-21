@@ -19,7 +19,7 @@ export default class NewsApiService {
     const data = await response.json();
     console.log(data);
     this.incrementPage();
-    return data.hits;
+    return data;
   }
 
   incrementPage() {

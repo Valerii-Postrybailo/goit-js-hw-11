@@ -3,7 +3,12 @@ import LoadMoreBtn from './load_more_btn';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-const axios = require('axios').default;
+// Описаний в документації
+import SimpleLightbox from "simplelightbox";
+// Додатковий імпорт стилів
+import "simplelightbox/dist/simple-lightbox.min.css";
+
+let lightbox = new SimpleLightbox('.gallery a', { /* options */ });
 
 ///////////////////////////////////////////////////////////////////
 
@@ -23,27 +28,35 @@ const galleryEl = document.querySelector(".gallery")
 formEl.addEventListener("submit", submitFormEvtHandler);
 
 loadMoreBtn.refs.button.addEventListener("click", onLoadMore);
+console.log(newsApiService.page)
 
 function submitFormEvtHandler(evt) {
-  evt.preventDefault();
+  console.log(newsApiService.page)
 
+  evt.preventDefault();
+  newsApiService.resetPage() 
   newsApiService.value  = evt.currentTarget.elements.searchQuery.value;
-  console.log( `newsApiService.value = ${newsApiService.value}`)
-  console.log(typeof(newsApiService.value))
 
   if(newsApiService.value.trim() === ''){
     Notify.failure("Empty, request!");
   }else{
-
+    console.log(newsApiService.page)
     newsApiService.fetchArticles().then(images => {
       deleteMarkup();
-      renderMarkup(images);
+      renderMarkup(images.hits);
+      lightbox.refresh();
 
-      if(images.length !== 0){
+      if(images.totalHits !== 0){
+        Notify.success(`"Hooray! We found ${images.totalHits} images."`);
+        console.log(Math.ceil(images.totalHits/40))
+        console.log(newsApiService.page)
+      }
+
+      if(images.totalHits/40 <= newsApiService.page){
+        loadMoreBtn.hide();
+      }else{
         loadMoreBtn.show();
         loadMoreBtn.enable();
-      }else{
-        loadMoreBtn.hide();
       }
     })
   }
@@ -51,21 +64,24 @@ function submitFormEvtHandler(evt) {
 
 function onLoadMore() {
   loadMoreBtn.disable();
-  // newsApiService.incrementPage()
+  console.log(newsApiService.page)
+
   newsApiService.fetchArticles().then(images => {
-    renderMarkup(images);
+    renderMarkup(images.hits);
+    lightbox.refresh();
     loadMoreBtn.enable();
   }).catch(error => console.error(error))
 }
 
 
 function  deleteMarkup() {
-  galleryEl.innerHTML =''
-  // ref.innerHTML = ''
+  galleryEl.innerHTML ='';
 }
 
 function renderMarkup(data) {
   console.log(data)
+  console.log(data.length)
+
   if (data.length === 0) {
     Notify.failure("Sorry, there are no images matching your search query. Please try again.");
     loadMoreBtn.hide();
@@ -81,7 +97,7 @@ function renderImgGallery(images) {
     .map(
       ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
         ` 
-          <a class="gallery__link-item">
+          <a class="gallery__link-item" href="${largeImageURL}">
             <div class="photo-card">
                 <img src="${webformatURL}" alt="${tags}" loading="lazy" />
               <div class="info">

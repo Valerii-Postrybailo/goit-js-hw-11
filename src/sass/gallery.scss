@@ -176,7 +176,15 @@ form button:hover{
   display: none;
 }
 
-
+a{
+  color: black;
+  text-decoration: none; 
+  
+  &:hover{
+    color: black;
+    text-decoration: none; 
+  }
+}
 
 
 
