@@ -42,17 +42,19 @@ function submitFormEvtHandler(evt) {
   }else{
     console.log(newsApiService.page)
     newsApiService.fetchArticles().then(images => {
+      console.log(newsApiService.page)
       deleteMarkup();
       renderMarkup(images.hits);
       lightbox.refresh();
 
       if(images.totalHits !== 0){
         Notify.success(`"Hooray! We found ${images.totalHits} images."`);
+
         console.log(Math.ceil(images.totalHits/40))
         console.log(newsApiService.page)
       }
 
-      if(images.totalHits/40 <= newsApiService.page){
+      if((Math.ceil(images.totalHits/40)+1) <= newsApiService.page){
         loadMoreBtn.hide();
       }else{
         loadMoreBtn.show();
@@ -64,6 +66,7 @@ function submitFormEvtHandler(evt) {
 
 function onLoadMore() {
   loadMoreBtn.disable();
+
   console.log(newsApiService.page)
 
   newsApiService.fetchArticles().then(images => {
@@ -91,8 +94,16 @@ function renderMarkup(data) {
 }
 
 function renderImgGallery(images) {
+
+  console.log(newsApiService.page)
+
+  if(images.length < 40 && newsApiService.page !== 2){
+    Notify.failure("We're sorry, but you've reached the end of search results.");
+    loadMoreBtn.hide();
+  }
+
   const markup = images
-  
+
   return markup
     .map(
       ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 

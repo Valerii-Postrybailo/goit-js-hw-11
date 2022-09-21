@@ -4,11 +4,12 @@ const API_KEY = '29743912-8e7685db13f3781653d214456'
 export default class NewsApiService {
   constructor() {
     this.inputValue = '';
-    this.page = 1;
+    this.page = 0;
   }
   
   async fetchArticles() {
     console.log(this)
+    console.log(this.page)
     // const options = {
     //   headers: {
     //     Autorization: `29743912-8e7685db13f3781653d214456` 
